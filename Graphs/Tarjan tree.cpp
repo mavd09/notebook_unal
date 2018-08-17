@@ -5,8 +5,8 @@ struct tarjan_tree {
 	vector<vector<int>> g, comps;
 	vector<pii> bridge;
 	vector<int> id, art;
-	tarjan_tree(int n) : n(n), g(n), id(n), art(n) {}
-	void add_edge(vector<vector<int>> &g, int u, int v) {
+	tarjan_tree(int n) : n(n+1), g(n+1), id(n+1), art(n+1) {}
+	void add_edge(vector<vector<int>> &g, int u, int v) { /// nodes from [1, n]
 		g[u].push_back(v);
 		g[v].push_back(u);
 	}
@@ -45,13 +45,13 @@ struct tarjan_tree {
           comps.back().push_back(w = st.top()), st.pop();
       }
     };
-    for(int u = 1, t; u < n; ++u)
+    for(int u = 1, t; u <= n; ++u)
       if(!dfn[u]) dfs(u, -1, t = 0);
   }
 	vector<vector<int>> build_block_cut_tree() {
 		tarjan(false);
 		int t = 0;
-		for(int u = 0; u < n; ++u)
+		for(int u = 1; u <= n; ++u)
 			if(art[u]) id[u] = t++;
 	  vector<vector<int>> tree(t+comps.size());
 		for(int i = 0; i < comps.size(); ++i) {

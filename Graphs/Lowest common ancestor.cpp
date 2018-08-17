@@ -39,7 +39,7 @@ void build(int root, int n) {
   //mn[root][0] = INT_MAX;
   dfs(root);
   for(int j = 0; j < LOG2-1; ++j)
-    for(int i = 0; i <= n; ++i) { // nodes
+    for(int i = 0; i < n; ++i) { // nodes
       dp[i][j+1] = dp[ dp[i][j] ][j];
       //mn[i][j+1] = min(mn[ dp[i][j] ][j], mn[i][j]);
     }
