@@ -1,4 +1,4 @@
-/// Complexity: O(|N|*logl|N|)
+/// Complexity: O(|N|*log|N|)
 /// Tested: https://tinyurl.com/yb5v9bau
 /// Theorem: it gives a necessary and sufficient condition for a finite sequence
 ///          of natural numbers to be the degree sequence of a simple graph

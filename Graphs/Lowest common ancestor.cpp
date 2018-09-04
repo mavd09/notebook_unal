@@ -34,12 +34,18 @@ void dfs(int u, int d = 1, int p = -1) {
     }
   }
 }
-void build(int root, int n) {
-  dp[root][0] = root;
-  //mn[root][0] = INT_MAX;
-  dfs(root);
+void build(int n) {
+  for(int i = 0; i <= n; i++) dp[i][0] = -1;
+  for(int i = 0; i < n, i++) {
+    if(dp[i][0] == -1) {
+      dp[i][0] = i;
+      //mn[i][0] = INT_MAX;
+      dfs(i);
+    }
+  }
+
   for(int j = 0; j < LOG2-1; ++j)
-    for(int i = 0; i < n; ++i) { // nodes
+    for(int i = 0; i <= n; ++i) { // nodes
       dp[i][j+1] = dp[ dp[i][j] ][j];
       //mn[i][j+1] = min(mn[ dp[i][j] ][j], mn[i][j]);
     }
