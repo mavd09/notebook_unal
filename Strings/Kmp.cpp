@@ -13,7 +13,7 @@ vector<int> get_phi(string &p) {
 int get_match(string &t, string &p) {
   vector<int> phi = get_phi(p);
   int matches = 0;
-  for(int i = 0, j = 1; i < t.size(); ++i ) {
+  for(int i = 0, j = 0; i < t.size(); ++i ) {
     while(j > 0 && t[i] != p[j] ) j = phi[j-1];
     if(t[i] == p[j]) ++j;
     if(j == p.size()) {
