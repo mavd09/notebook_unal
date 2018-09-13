@@ -8,7 +8,7 @@ int dfs(int u, int d, int p = -1) {
   to[u] = t-1;
   return sz[u];
 }
-void add(int u, int x) { /// x == 1 add, x == -1 delte
+void add(int u, int x) { /// x == 1 add, x == -1 delete
   cnt[u] += x;
 }
 void go(int u, int p, bool keep) {
@@ -27,7 +27,6 @@ void go(int u, int p, bool keep) {
         add(who[i], 1);
   add(u, 1);
   ans[u] = get(u);
-
   if(!keep)
     for(int i = fr[u]; i <= to[u]; i++)
       add(who[i], -1);

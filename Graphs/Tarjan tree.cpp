@@ -48,20 +48,20 @@ struct tarjan_tree {
     for(int u = 1, t; u <= n; ++u)
       if(!dfn[u]) dfs(u, -1, t = 0);
   }
-	vector<vector<int>> build_block_cut_tree() {
-		tarjan(false);
-		int t = 0;
-		for(int u = 1; u <= n; ++u)
-			if(art[u]) id[u] = t++;
-	  vector<vector<int>> tree(t+comps.size());
-		for(int i = 0; i < comps.size(); ++i)
-			for(int u : comps[i]) {
-				if(!art[u]) id[u] = i+t;
-				else add_edge(tree, i+t, id[u]);
-			}
-		return tree;
-	}
-	vector<vector<int>> build_bridge_tree() {
+  vector<vector<int>> build_block_cut_tree() {
+    tarjan(false);
+    int t = 0;
+    for(int u = 1; u <= n; ++u)
+      if(art[u]) id[u] = t++;
+    vector<vector<int>> tree(t+comps.size());
+    for(int i = 0; i < comps.size(); ++i)
+      for(int u : comps[i]) {
+        if(!art[u]) id[u] = i+t;
+        else add_edge(tree, i+t, id[u]);
+      }
+    return tree;
+  }
+  vector<vector<int>> build_bridge_tree() {
     tarjan(true);
     vector<vector<int>> tree(comps.size());
     for(int i = 0; i < comps.size(); ++i)
@@ -69,5 +69,5 @@ struct tarjan_tree {
     for(auto &b : bridge)
       add_edge(tree, id[b.first], id[b.second]);
     return tree;
-	}
+  }
 };
