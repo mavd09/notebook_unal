@@ -1,17 +1,17 @@
-int dfs(int u, int d, int p = -1) {
+int dfs(int u, int p = -1) {
   fr[u] = t++;
   who[t-1] = u;
-  sz[u] = g[u].size();
+  sz[u] = 0;
   for(auto v : g[u])
     if(v != p)
-      sz[u] += dfs(v, d+1, u);
+      sz[u] += dfs(v, u)+1;
   to[u] = t-1;
   return sz[u];
 }
 void add(int u, int x) { /// x == 1 add, x == -1 delte
   cnt[u] += x;
 }
-void go(int u, int p, bool keep) {
+void go(int u, int p = -1, bool keep = true) {
   int mx = -1, big = -1;
   for(auto v : g[u])
     if(v != p && sz[v] > mx)
@@ -32,8 +32,8 @@ void go(int u, int p, bool keep) {
     for(int i = fr[u]; i <= to[u]; i++)
       add(who[i], -1);
 }
-void solve() {
+void solve(int root) {
   t = 0;
-  dfs(1, 0);
-  go(1, -1, 1);
+  dfs(root);
+  go(root);
 }
