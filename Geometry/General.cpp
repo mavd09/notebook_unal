@@ -87,12 +87,12 @@ bool inter_ll(line l1, line l2, pt &out) {
   out = (l2.v*l1.c - l1.v*l2.c) / d;
   return true;
 }
-/*line bisector(line l1, line l2, bool interior) {
+line bisector(line l1, line l2, bool interior) {
   assert(cross(l1.v, l2.v) != 0); /// l1 and l2 cannot be parallel!
   lf sign = interior ? 1 : -1;
   return {l2.v/abs(l2.v) + l1.v/abs(l1.v) * sign,
           l2.c/abs(l2.v) + l1.c/abs(l1.v) * sign};
-}*/
+}
 
 bool in_disk(pt a, pt b, pt p) {
   return dot(a-p, b-p) <= 0;
@@ -313,7 +313,7 @@ int inter_cc(circle c1, circle c2, pair<pt, pt> &out) {
   pt d=c2.c-c1.c; double d2=norm(d);
   if(d2 == 0) { assert(c1.r != c2.r); return 0; } // concentric circles
   double pd = (d2 + c1.r*c1.r - c2.r*c2.r)/2; // = |O_1P| * d
-  double h2 = c1.r*c1.r - pd*pd/d2; // = hˆ2
+  double h2 = c1.r*c1.r - pd*pd/d2; // = hï¿½2
   if(h2 >= 0) {
     pt p = c1.c + d*pd/d2, h = rot90ccw(d)*sqrt(h2/d2);
     out = {p-h, p+h};
