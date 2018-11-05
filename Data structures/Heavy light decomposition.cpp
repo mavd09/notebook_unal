@@ -45,9 +45,9 @@ data query_hld( int u, int v ) {
 ///   val = val+query_tree(depth[u] + 1, depth[v]);
 }
 void build(int n, int root) {
-  len = hld_index = up = vector<int>(n+1);
+  len = hld_index = up = depth = vector<int>(n+1);
   hld_child = hld_root = vector<int>(n+1, -1);
-  idx = 0; /// segtree index [0, n-1]
-  dfs(root); build_hld(root);
+  idx = 1; /// segtree index [1, n]
+  dfs(root, root); build_hld(root, root);
   /// initialize data structure
 }
