@@ -1,28 +1,28 @@
 int dfs(int u, int p = -1) {
-  fr[u] = t++;
-  who[t-1] = u;
-  sz[u] = 0;
+  who[t] = u; fr[u] = t++;
+  pii best = {0, -1};
+  int sz = 1;
   for(auto v : g[u])
-    if(v != p)
-      sz[u] += dfs(v, u)+1;
+    if(v != p) {
+      int cur_sz = dfs(v, u);
+      sz += cur_sz;
+      best = max(best, {cur_sz, v});
+    }
   to[u] = t-1;
-  return sz[u];
+  big[u] = best.second;
+  return sz;
 }
 void add(int u, int x) { /// x == 1 add, x == -1 delete
   cnt[u] += x;
 }
 void go(int u, int p = -1, bool keep = true) {
-  int mx = -1, big = -1;
   for(auto v : g[u])
-    if(v != p && sz[v] > mx)
-      mx = sz[v], big = v;
-  for(auto v : g[u])
-    if(v != p && v != big)
+    if(v != p && v != big[u])
       go(v, u, 0);
-  if(big != -1) go(big, u, 1);
+  if(big[u] != -1) go(big[u], u, 1);
   /// add all small
   for(auto v : g[u])
-    if(v != p && v != big)
+    if(v != p && v != big[u])
       for(int i = fr[v]; i <= to[v]; i++)
         add(who[i], 1);
   add(u, 1);
