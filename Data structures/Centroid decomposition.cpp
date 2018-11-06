@@ -16,6 +16,7 @@ namespace decomposition {
   int decompose (int u, int d = 1) {
     int centroid = get_centroid(u, dfs(u) >> 1);
     depth[centroid] = d;
+    /// magic function
     for (int v : g[centroid])
       if (!depth[v])
         f[decompose(v, d + 1)] = centroid;
