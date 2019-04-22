@@ -41,8 +41,8 @@ data query_hld( int u, int v ) {
   val = val+query_tree(hld_index[u], hld_index[v]);
   return val;
 /// when updates are on edges use:
-///   if (depth[u] == depth[v]) return ans;
-///   val = val+query_tree(depth[u] + 1, depth[v]);
+///   if (depth[u] == depth[v]) return val;
+///   val = val+query_tree(hld_index[u] + 1, hld_index[v]);
 }
 void build(int n, int root) {
   len = hld_index = up = depth = vector<int>(n+1);
