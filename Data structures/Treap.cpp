@@ -78,6 +78,17 @@ private:
 		else if(index > cnt(t->l)) return get(t->r, index - cnt(t->l) - 1);
 		return t->key;
 	}  
+  T query_sum (pitem &t, int l, int r) {
+		pitem l1, r1;
+		split (t, l1, r1, r + 1);
+		pitem l2, r2;
+		split (l1, l2, r2, l);
+		T ret = r2->fsum;
+		pitem t2;
+		merge (t2, l2, r2);
+		merge (t, t2, r1);
+		return ret;
+	}
 public:
 	int size() { return cnt(root); }
 	void insert(int pos, T x) {
@@ -88,6 +99,9 @@ public:
 	void erase(int pos) {
 		if(pos >= size()) return;
 		erase(root, pos);
+	}
+  T sum(int left, int right) {
+    return query_sum(root, left, right);
 	}
 	T operator[](int index) { return get(root, index); }
 };
