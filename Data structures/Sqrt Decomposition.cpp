@@ -24,12 +24,9 @@ struct bucket {
 };
 { /// at main(), update from a to b, len is the size of bucket
   int l = a / len, r = b / len;
-  if(l == r) ds[l].operation(a, b, x);
-  else {
-    ds[l].operation(a, (l+1)*len - 1);
-    for(int i = l+1; i < r; i++) { /// in theory, all are complete
-      ds[i].operation(i*len, (i+1)*len - 1);
-    }
-    ds[r].operation(r*len, b, x);
+  for(int i = l i <= r; i++) { /// in theory, all are complete
+    int x = max(l, i*len);
+    int y = min(r, (i+1)*len-1);
+    bucket[i].operation(x, y);
   }
 }
