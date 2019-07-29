@@ -1,44 +1,31 @@
 /// Complexity: O(|text|+SUM(|pattern_i|)+matches)
-/// Tested: https://tinyurl.com/y7l4v6mg
-struct aho_corasick {
-  const static int alpha = 300;
-  vector<int> fail, cnt_word;
-  vector<vector<int>> trie;
-  int nodes;
-  aho_corasick(int maxn) : nodes(1), trie(maxn, vector<int>(alpha)),
-                           fail(maxn), cnt_word(maxn) {}
-  void add(string &s) {
-    int u = 1;
-    for(auto x : s) {
-      int c = x-'a';
-      if(!trie[u][c]) trie[u][c] = ++nodes;
-      u = trie[u][c];
-    }
-    cnt_word[u]++;
+/// Tested: https://tinyurl.com/y2zq594p
+const static int alpha = 26;
+int trie[N*alpha][alpha], fail[N*alpha], nodes;
+void add(string &s, int i) {
+  int cur = 0;
+  for(char c : s) {
+    int x = c-'a';
+    if(!trie[cur][x]) trie[cur][x] = ++nodes;
+    cur = trie[cur][x];
   }
-  int mv(int u, int c){
-    while(!trie[u][c]) u = fail[u];
-    return trie[u][c];
-  }
-  void build() {
-    queue<int> q;
+  //cnt_word[cur]++;
+  //end_word[cur] = i; // for i > 0
+}
+void build() {
+  queue<int> q; q.push(0);
+  while(q.size()) {
+    int u = q.front(); q.pop();
     for(int i = 0; i < alpha; ++i) {
-      if(trie[1][i]) {
-        q.push(trie[1][i]);
-        fail[ trie[1][i] ] = 1;
-      }
-      else trie[1][i] = 1;
-    }
-    while(q.size()) {
-      int u = q.front(); q.pop();
-      for(int i = 0; i < alpha; ++i){
-        int v = trie[u][i];
-        if(v) {
-          fail[v] = mv(fail[u], i);
-          cnt_word[v] += cnt_word[ fail[v] ];
-          q.push(v);
-        }
-      }
+      int v = trie[u][i];
+      if(!v) continue;
+      q.push(v);
+      if(!u) continue;
+      fail[v] = fail[u];
+      while(fail[v] && !trie[ fail[v] ][i]) fail[v] = fail[ fail[v] ];
+      fail[v] = trie[ fail[v] ][i];
+      //fail_out[v] = end_word[ fail[v] ] ? fail[v] : fail_out[ fail[v] ];
+      //cnt_word[v] += cnt_word[ fail[v] ]; // obtener informacion del fail_padre
     }
   }
-};
+}
