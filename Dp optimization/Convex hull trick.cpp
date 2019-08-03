@@ -5,7 +5,7 @@ struct line {
 struct cht {
   vector<line> lines;
   vector<lf> inter;
-  int n, i;
+  int n;
   lf get_inter(line &a, line &b) { return lf(b.b - a.b) / (a.m - b.m); }
   inline bool ok(line &a, line &b, line &c) { 
     return lf(a.b-c.b) / (c.m-a.m) > lf(a.b-b.b) / (b.m-a.m); 
