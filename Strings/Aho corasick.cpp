@@ -1,7 +1,7 @@
 /// Complexity: O(|text|+SUM(|pattern_i|)+matches)
 /// Tested: https://tinyurl.com/y2zq594p
 const static int alpha = 26;
-int trie[N*alpha][alpha], fail[N*alpha], nodes;
+int trie[N][alpha], fail[N], nodes;
 void add(string &s, int i) {
   int cur = 0;
   for(char c : s) {
@@ -18,12 +18,10 @@ void build() {
     int u = q.front(); q.pop();
     for(int i = 0; i < alpha; ++i) {
       int v = trie[u][i];
-      if(!v) continue;
-      q.push(v);
-      if(!u) continue;
-      fail[v] = fail[u];
-      while(fail[v] && !trie[ fail[v] ][i]) fail[v] = fail[ fail[v] ];
-      fail[v] = trie[ fail[v] ][i];
+      if(!v) trie[u][i] = trie[ fail[u] ][i]; // construir automata
+      else q.push(v);
+      if(!u || !v) continue;
+      fail[v] = trie[ fail[u] ][i];
       //fail_out[v] = end_word[ fail[v] ] ? fail[v] : fail_out[ fail[v] ];
       //cnt_word[v] += cnt_word[ fail[v] ]; // obtener informacion del fail_padre
     }
