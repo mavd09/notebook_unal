@@ -6,7 +6,7 @@ void dfs_len( int u, int p, int d ) {
   len[u] = 1; up[u] = p;  depth[u] = d;
   for( auto& v : g[u] ) {
     if( v == p ) continue;
-    dfs(v, u, d+1);
+    dfs_len(v, u, d+1);
     len[u] += len[v];
     if(len[ g[u][0] ] < len[v]) swap(g[u][0], v);
   }
