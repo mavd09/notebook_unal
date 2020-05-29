@@ -3,7 +3,7 @@
 int idx;
 vector<int> len, depth, in, out, top, up;
 int dfs_len( int u, int p, int d ) {
-  len[u] = 1; up[u] = p;  depth[u] = d;
+  up[u] = p;  depth[u] = d;
   int sz = 1;
   for( auto& v : g[u] ) {
     if( v == p ) continue;
