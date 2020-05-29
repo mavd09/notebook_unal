@@ -7,8 +7,8 @@ void dfs_len( int u, int p, int d ) {
   for( auto& v : g[u] ) {
     if( v == p ) continue;
     dfs_len(v, u, d+1);
+    if(len[ g[u][0] ] <= len[v]) swap(g[u][0], v);
     len[u] += len[v];
-    if(len[ g[u][0] ] < len[v]) swap(g[u][0], v);
   }
 }
 void dfs_hld( int u, int p = 0 ) {
