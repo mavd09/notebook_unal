@@ -2,14 +2,15 @@
 /// Tested: https://tinyurl.com/ybdbmbw7(problem L)
 int idx;
 vector<int> len, depth, in, out, top, up;
-void dfs_len( int u, int p, int d ) {
+int dfs_len( int u, int p, int d ) {
   len[u] = 1; up[u] = p;  depth[u] = d;
+  int sz = 1;
   for( auto& v : g[u] ) {
     if( v == p ) continue;
-    dfs_len(v, u, d+1);
+    sz += dfs_len(v, u, d+1);
     if(len[ g[u][0] ] <= len[v]) swap(g[u][0], v);
-    len[u] += len[v];
   }
+  return len[u] = sz;
 }
 void dfs_hld( int u, int p = 0 ) {
   in[u] = idx++;
