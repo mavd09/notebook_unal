@@ -1,53 +1,32 @@
 /// Complexity: O(|N|*log(|N|))
 /// Tested: https://tinyurl.com/y8wdubdw
-struct suffix_array {
-  const static int alpha = 300;
-  int mx, n;
-  string s;
-  vector<int> pos, tpos, sa, tsa, lcp;
-  suffix_array(string t) {
-    s = t+"$"; n = s.size(); mx = max(alpha, n)+2;
-    pos = tpos = tsa = sa = lcp = vector<int>(n);
-  }
-  bool check(int i, int gap) {
-    if(pos[ sa[i-1] ] != pos[ sa[i] ]) return true;
-    if(sa[i-1]+gap < n && sa[i]+gap < n)
-      return (pos[ sa[i-1]+gap ] != pos[ sa[i]+gap ]);
-    return true;
-  }
-  void radix_sort(int k) {
-    vector<int> cnt(mx);
-    for(int i = 0; i < n; i++)
-      cnt[(i+k < n) ? pos[i+k]+1 : 1]++;
-    for(int i = 1; i < mx; i++)
-      cnt[i] += cnt[i-1];
-    for(int i = 0; i < n; i++)
-      tsa[cnt[(sa[i]+k < n) ? pos[sa[i]+k] : 0]++] = sa[i];
-    sa = tsa;
-  }
-  void build_sa() {
-    for(int i = 0; i < n; i++) {
-      sa[i] = i;
-      pos[i] = s[i];
+const int alpha = 400; 
+struct suffix_array { // s MUST not have 0 value
+  vector<int> sa, pos, lcp;
+  suffix_array(string s) {
+    s.push_back('$'); // always add something less to input, so it stays in pos 0
+    int n = s.size(), mx = max(alpha, n)+2;
+    vector<int> a(n), a1(n), c(2*n), c1(2*n), head(mx), cnt(mx);
+    pos = lcp = a;
+    for(int i = 0; i < n; i++) c[i] = s[i], a[i] = i, cnt[ c[i] ]++;
+    for(int i = 0; i < mx-1; i++) head[i+1] = head[i] + cnt[i];
+    for(int k = 0; k < n; k = max(1, k<<1)) {
+      for(int i = 0; i < n; i++) {
+        int j = (a[i] - k + n) % n;
+        a1[ head[ c[j] ]++ ] = j;
+      }
+      swap(a1, a);
+      for(int i = 0, x = a[0], y, col = 0; i < n; i++, x = a[i], y = a[i-1]) {
+        c1[x] = (i && c[x] == c[y] && c[x+k] == c[y+k]) ? col : ++col;
+        if(!i || c1[x] != c1[y]) head[col] = i;
+      }
+      swap(c1, c);
+      if(c[ a[n-1] ] == n) break;
     }
-    for(int gap = 1; gap < n; gap <<= 1) {
-      radix_sort(gap);
-      radix_sort(0);
-      tpos[ sa[0] ] = 0;
-      for(int i = 1; i < n; i++)
-        tpos[ sa[i] ] = tpos[ sa[i-1] ] + check(i, gap);
-      pos = tpos;
-      if(pos[ sa[n-1] ] == n-1) break;
-    }
-  }
-  void build_lcp() {
-    int k = 0;
-    lcp[0] = 0;
-    for(int i = 0; i < n; i++) {
-      if(pos[i] == 0) continue;
-      while(s[i+k] == s[ sa[ pos[i]-1 ]+k ]) k++;
-      lcp[ pos[i] ] = k;
-      k = max(0, k-1);
+    swap(sa, a);
+    for(int i = 0; i < n; i++) pos[ sa[i] ] = i;
+    for(int i = 0, k = 0, j; i < n-1; lcp[ pos[i++] ] = k) {
+      for(k = max(0, k-1), j = sa[ pos[i]-1 ]; s[i+k] == s[j+k]; k++);
     }
   }
   int& operator[] ( int i ){ return sa[i]; }
