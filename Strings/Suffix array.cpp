@@ -25,8 +25,9 @@ struct suffix_array { // s MUST not have 0 value
     }
     swap(sa, a);
     for(int i = 0; i < n; i++) pos[ sa[i] ] = i;
-    for(int i = 0, k = 0, j; i < n-1; lcp[ pos[i++] ] = k) {
-      for(k = max(0, k-1), j = sa[ pos[i]-1 ]; s[i+k] == s[j+k]; k++);
+    for(int i = 0, k = 0, j; i < n; lcp[ pos[i++] ] = k) {
+      if(pos[i] == n-1) continue;
+      for(k = max(0, k-1), j = sa[ pos[i]+1 ]; s[i+k] == s[j+k]; k++);
     }
   }
   int& operator[] ( int i ){ return sa[i]; }
